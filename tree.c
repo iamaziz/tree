@@ -19,10 +19,8 @@
 
 #include "tree.h"
 
-static char *version ="$Version: $ tree v1.6.0 (c) 1996 - 2011 by Steve Baker, Thomas Moore, Francesc Rocher, Kyosuke Tokoro $";
-static char *hversion="\t\t tree v1.6.0 %s 1996 - 2011 by Steve Baker and Thomas Moore <br>\n"
-		      "\t\t HTML output hacked and copyleft %s 1998 by Francesc Rocher <br>\n"
-		      "\t\t Charsets / OS/2 support %s 2001 by Kyosuke Tokoro\n";
+static char *version ="";
+static char *hversion="";
 
 /* Globals */
 bool dflag, lflag, pflag, sflag, Fflag, aflag, fflag, uflag, gflag;
@@ -496,7 +494,7 @@ int main(int argc, char **argv)
 
   if (Hflag) {
     fprintf(outfile,"\t<br><br>\n\t</p>\n");
-    fprintf(outfile,"\t<hr>\n");
+    //fprintf(outfile,"\t<hr>\n");
     fprintf(outfile,"\t<p class=\"VERSION\">\n");
     fprintf(outfile,hversion,linedraw->copy, linedraw->copy, linedraw->copy);
     fprintf(outfile,"\t</p>\n");
