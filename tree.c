@@ -363,7 +363,7 @@ int main(int argc, char **argv)
     }
   }
   if (p) dirname[p] = NULL;
-  
+
   if (outfilename == NULL) {
 #ifdef __EMX__
     _fsetmode(outfile=stdout,Hflag?"b":"t");
@@ -498,6 +498,10 @@ int main(int argc, char **argv)
     fprintf(outfile,"\t<p class=\"VERSION\">\n");
     fprintf(outfile,hversion,linedraw->copy, linedraw->copy, linedraw->copy);
     fprintf(outfile,"\t</p>\n");
+    //report date/time in html
+    time_t current_time;
+    current_time = time(NULL);
+    fprintf(outfile, "since: %s", ctime(&current_time));
     fprintf(outfile,"</body>\n");
     fprintf(outfile,"</html>\n");
   } else if (Xflag) {
@@ -609,7 +613,7 @@ struct _info **read_dir(char *dir, int *n)
       st.st_dev = lst.st_dev;
       st.st_ino = lst.st_ino;
     }
-      
+
 #ifndef __EMX__
     if ((lst.st_mode & S_IFMT) != S_IFDIR && !(((lst.st_mode & S_IFMT) == S_IFLNK) && lflag)) {
       if (pattern && patmatch(ent->d_name,pattern) != 1) continue;
@@ -687,7 +691,7 @@ struct _info **getfulltree(char *d, u_long lev, dev_t dev, off_t *size, char **e
   struct _info **dir, **sav, **p, *sp;
   struct stat sb;
   int n;
-  
+
   *err = NULL;
   if (Level >= 0 && lev > Level) return NULL;
   if (xdev && lev == 0) {
@@ -704,7 +708,7 @@ struct _info **getfulltree(char *d, u_long lev, dev_t dev, off_t *size, char **e
     return NULL;
   }
   path = malloc(pathsize=4096);
-  
+
   if (flimit > 0 && n > flimit) {
     sprintf(path,"%d entries exceeds filelimit, not opening dir",n);
     *err = scopy(path);
@@ -713,11 +717,11 @@ struct _info **getfulltree(char *d, u_long lev, dev_t dev, off_t *size, char **e
     return NULL;
   }
   if (!nosort) qsort(dir,n,sizeof(struct _info *),cmpfunc);
-  
+
   if (lev >= maxdirs-1) {
     dirs = xrealloc(dirs,sizeof(int) * (maxdirs += 1024));
   }
-  
+
   while (*dir) {
     if ((*dir)->isdir && !(xdev && dev != (*dir)->dev)) {
       if ((*dir)->lnk) {
@@ -841,7 +845,7 @@ void *xrealloc (void *ptr, size_t size)
 void free_dir(struct _info **d)
 {
   int i;
-  
+
   for(i=0;d[i];i++) {
     free(d[i]->name);
     if (d[i]->lnk) free(d[i]->lnk);
@@ -854,7 +858,7 @@ char *gnu_getcwd()
 {
   int size = 100;
   char *buffer = (char *) xmalloc (size);
-     
+
   while (1)
     {
       char *value = getcwd (buffer, size);
@@ -1138,6 +1142,6 @@ char *fillinfo(char *buf, struct _info *ent)
   if (gflag) n += sprintf(buf+n, " %-8.8s", gidtoname(ent->gid));
   if (sflag) n += psize(buf+n,ent->size);
   if (Dflag) n += sprintf(buf+n, " %s", do_date(cflag? ent->ctime : ent->mtime));
-  
+
   return buf;
 }

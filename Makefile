@@ -53,10 +53,10 @@ LDFLAGS=-s
 #OBJS+=strverscmp.o
 
 # Uncomment for OS X:
-#CC=cc
-#CFLAGS=-O2 -Wall -fomit-frame-pointer -no-cpp-precomp
-#LDFLAGS=
-#OBJS+=strverscmp.o
+CC=cc
+CFLAGS=-O2 -Wall -fomit-frame-pointer -no-cpp-precomp
+LDFLAGS=
+OBJS+=strverscmp.o
 
 # Uncomment for HP/UX:
 #CC=cc
@@ -104,7 +104,7 @@ install: tree
 distclean:
 	if [ -f tree.o ]; then rm *.o; fi
 	rm -f *~
-	
+
 
 dist:	distclean
 	tar zcf ../tree-$(VERSION).tgz -C .. `cat .tarball`
